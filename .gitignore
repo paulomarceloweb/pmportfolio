@@ -1,0 +1,21 @@
+# Dependências (quando Vite for adicionado)
+node_modules/
+
+# Build (quando Vite for adicionado)
+assets/dist/
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor
+.vscode/settings.json
+*.sublime-workspace
+.idea/
+
+# PHP
+*.log
+
+# Sensível
+.env
