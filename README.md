@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # PMPortfolio
 
 > Premium bilingual WordPress portfolio theme built from scratch.
@@ -49,3 +50,7 @@ Requirements: PHP 8.2+, WordPress 6.4+, WAMP/XAMPP
 **Paulo Marcelo** — Software Engineer & Marketing Tech Lead
 - Available for remote work worldwide
 - [paulomarcelo.dev](https://paulomarcelo.dev)
+=======
+# pmportfolio
+Premium bilingual WordPress portfolio theme — PHP 8.2, Bootstrap 5.3, advanced SEO
+
