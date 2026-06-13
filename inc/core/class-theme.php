@@ -40,6 +40,9 @@ class Theme
 
 		// Enfileiramento condicional de CSS e JS por página
 		(new Asset_Manager())->register();
+
+		// Custom Post Types 
+		(new \PMPortfolio\CPT\CPT_Registry())->register();
 	}
 
 	/**
