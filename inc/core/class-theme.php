@@ -43,6 +43,11 @@ class Theme
 
 		// Custom Post Types 
 		(new \PMPortfolio\CPT\CPT_Registry())->register();
+
+		// Meta Boxes — 
+    	( new \PMPortfolio\Meta\Portfolio_Meta() )->register();
+    	( new \PMPortfolio\Meta\Service_Meta() )->register();
+
 	}
 
 	/**
