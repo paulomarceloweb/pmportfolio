@@ -49,9 +49,14 @@ class Theme
     	( new \PMPortfolio\Meta\Service_Meta() )->register();
 
 		// Painel de opções — só carrega no admin
-    if ( is_admin() ) {
-        ( new \PMPortfolio\Admin\Options_Page() )->register();
-    }
+    	if ( is_admin() ) {
+        	( new \PMPortfolio\Admin\Options_Page() )->register();
+    	}
+
+		// SEO — apenas no frontend
+   		 if ( ! is_admin() ) {
+        	( new \PMPortfolio\SEO\SEO_Manager() )->register();
+    	}
 
 	}
 
