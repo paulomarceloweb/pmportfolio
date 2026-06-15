@@ -48,18 +48,42 @@ class Theme
     	( new \PMPortfolio\Meta\Portfolio_Meta() )->register();
     	( new \PMPortfolio\Meta\Service_Meta() )->register();
 
+		// Painel de opções — só carrega no admin
+    if ( is_admin() ) {
+        ( new \PMPortfolio\Admin\Options_Page() )->register();
+    }
+
 	}
 
 	/**
 	 * Registra hooks globais que pertencem ao tema em si,
 	 * não a um módulo específico.
 	 */
-	private function register_hooks(): void
-	{
+	private function register_hooks(): void {
+    add_action( 'init',       [ $this, 'clean_wp_head' ] );
+    add_action( 'wp_head',    [ $this, 'inject_head_scripts' ], 99 );
+    add_action( 'wp_footer',  [ $this, 'inject_footer_scripts' ], 99 );
+}
 
-		// Limpeza do <head> — remove entulho do WordPress
-		add_action('init', [$this, 'clean_wp_head']);
-	}
+/**
+ * Injeta scripts personalizados do painel no <head>.
+ */
+public function inject_head_scripts(): void {
+    $scripts = \PMPortfolio\Admin\Settings_API::get( 'head_scripts' );
+    if ( $scripts ) {
+        echo wp_kses_post( $scripts ) . "\n";
+    }
+}
+
+/**
+ * Injeta scripts personalizados do painel no rodapé.
+ */
+public function inject_footer_scripts(): void {
+    $scripts = \PMPortfolio\Admin\Settings_API::get( 'footer_scripts' );
+    if ( $scripts ) {
+        echo wp_kses_post( $scripts ) . "\n";
+    }
+}
 
 	/**
 	 * Remove itens desnecessários do <head> gerados pelo WordPress.
