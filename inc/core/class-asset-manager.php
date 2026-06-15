@@ -72,12 +72,20 @@ class Asset_Manager
         );
 
         // Global JS — theme toggle, lang switch, FAQ accordion, form
-        wp_enqueue_script(
+        // wp_enqueue_script(
+        //     'pm-global',
+        //     PMPORTFOLIO_URI . '/assets/js/global.js',
+        //     ['bootstrap'],
+        //     PMPORTFOLIO_VERSION,
+        //     false
+        // );
+
+         wp_enqueue_script(
             'pm-global',
             PMPORTFOLIO_URI . '/assets/js/global.js',
-            ['bootstrap'],
+            [],
             PMPORTFOLIO_VERSION,
-            true
+            false
         );
     }
 
@@ -154,11 +162,14 @@ class Asset_Manager
     public function dequeue_unwanted(): void
     {
 
-        // jQuery — não usamos no frontend deste tema
-        // Obs: continua disponível no wp-admin
-        wp_deregister_script('jquery');
-        wp_deregister_script('jquery-core');
-        wp_deregister_script('jquery-migrate');
+       // Remove jQuery apenas para visitantes não logados
+    // Plugins como WP Fastest Cache precisam do jQuery
+    // quando o admin bar está visível
+    if ( ! is_user_logged_in() ) {
+        wp_deregister_script( 'jquery' );
+        wp_deregister_script( 'jquery-core' );
+        wp_deregister_script( 'jquery-migrate' );
+    }
 
         // CSS do editor Gutenberg — não usamos blocos no frontend
         wp_dequeue_style('wp-block-library');
@@ -186,32 +197,29 @@ class Asset_Manager
      * @param string|null $js_handle   Handle e nome do arquivo JS (sem extensão)
      *                                 Se null, usa o mesmo nome do CSS
      */
-    private function enqueue_page(string $css_handle, ?string $js_handle = null): void
-    {
+    private function enqueue_page( string $css_handle, ?string $js_handle = null ): void {
 
-        $js_handle = $js_handle ?? $css_handle;
+    $js_handle = $js_handle ?? $css_handle;
 
-        // CSS da página — só enfileira se o arquivo existir
-        $css_path = PMPORTFOLIO_DIR . "/assets/css/{$css_handle}.css";
-        if (file_exists($css_path)) {
-            wp_enqueue_style(
-                "pm-{$css_handle}",
-                PMPORTFOLIO_URI . "/assets/css/{$css_handle}.css",
-                ['pm-global'],
-                PMPORTFOLIO_VERSION
-            );
-        }
-
-        // JS da página — só enfileira se o arquivo existir
-        $js_path = PMPORTFOLIO_DIR . "/assets/js/{$js_handle}.js";
-        if (file_exists($js_path)) {
-            wp_enqueue_script(
-                "pm-{$js_handle}",
-                PMPORTFOLIO_URI . "/assets/js/{$js_handle}.js",
-                ['pm-global'],
-                PMPORTFOLIO_VERSION,
-                true
-            );
-        }
+    $css_path = PMPORTFOLIO_DIR . "/assets/css/{$css_handle}.css";
+    if ( file_exists( $css_path ) ) {
+        wp_enqueue_style(
+            "pm-{$css_handle}",
+            PMPORTFOLIO_URI . "/assets/css/{$css_handle}.css",
+            [ 'pm-global' ],
+            PMPORTFOLIO_VERSION
+        );
     }
+
+    $js_path = PMPORTFOLIO_DIR . "/assets/js/{$js_handle}.js";
+    if ( file_exists( $js_path ) ) {
+        wp_enqueue_script(
+            "pm-{$js_handle}",
+            PMPORTFOLIO_URI . "/assets/js/{$js_handle}.js",
+            [], // ← remove dependência, carrega independente
+            PMPORTFOLIO_VERSION,
+            true // ← rodapé
+        );
+    }
+}
 }
