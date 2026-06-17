@@ -99,31 +99,39 @@ $contato = home_url( '/contato/' );
 	</div>
 
 	<!-- NÚMEROS -->
-	<div style="background:var(--pm-bg1);border-bottom:1px solid var(--pm-b2);padding:2.5rem 0">
-		<div class="container-xl">
-			<div class="row g-0" style="border:1px solid var(--pm-b2);border-radius:var(--pm-rl);overflow:hidden">
-				<?php
-				$stats = [
-					[ 'num' => '47+', 'label' => __( 'projetos entregues', 'pmportfolio' ) ],
-					[ 'num' => '8+',  'label' => __( 'anos de experiência', 'pmportfolio' ) ],
-					[ 'num' => '32+', 'label' => __( 'clientes satisfeitos', 'pmportfolio' ) ],
-					[ 'num' => '4+',  'label' => __( 'países atendidos', 'pmportfolio' ) ],
-				];
-				foreach ( $stats as $i => $stat ) :
-					$border = $i < 3 ? 'border-right:1px solid var(--pm-b2);' : '';
-				?>
-				<div class="col-6 col-md-3" style="background:var(--pm-bg1);<?php echo $border; ?>padding:1.5rem;text-align:center">
-					<div style="font-family:var(--pm-fd);font-size:2rem;font-weight:800;color:var(--pm-t1);line-height:1">
-						<?php echo esc_html( $stat['num'] ); ?>
-					</div>
-					<div style="font-family:var(--pm-fm);font-size:9px;color:var(--pm-t3);letter-spacing:.06em;text-transform:uppercase;margin-top:4px">
-						<?php echo esc_html( $stat['label'] ); ?>
-					</div>
+<div style="background:var(--pm-bg1);border-bottom:1px solid var(--pm-b2);padding:2.5rem 0">
+	<div class="container-xl">
+		<div class="pm-stats-grid">
+			<div class="row g-0">
+
+				<div class="col-6 col-md-3 pm-stat-item">
+					<div class="pm-stat-lbl2">// <?php esc_html_e( 'projetos', 'pmportfolio' ); ?></div>
+					<div class="pm-stat-big">47<em>+</em></div>
+					<div class="pm-stat-desc"><?php esc_html_e( 'entregues com sucesso', 'pmportfolio' ); ?></div>
 				</div>
-				<?php endforeach; ?>
+
+				<div class="col-6 col-md-3 pm-stat-item">
+					<div class="pm-stat-lbl2">// <?php esc_html_e( 'experiência', 'pmportfolio' ); ?></div>
+					<div class="pm-stat-big">8<em>+</em></div>
+					<div class="pm-stat-desc"><?php esc_html_e( 'anos de experiência', 'pmportfolio' ); ?></div>
+				</div>
+
+				<div class="col-6 col-md-3 pm-stat-item">
+					<div class="pm-stat-lbl2">// <?php esc_html_e( 'clientes', 'pmportfolio' ); ?></div>
+					<div class="pm-stat-big">32<em>+</em></div>
+					<div class="pm-stat-desc"><?php esc_html_e( 'clientes satisfeitos', 'pmportfolio' ); ?></div>
+				</div>
+
+				<div class="col-6 col-md-3 pm-stat-item">
+					<div class="pm-stat-lbl2">// <?php esc_html_e( 'alcance', 'pmportfolio' ); ?></div>
+					<div class="pm-stat-big">4<em>+</em></div>
+					<div class="pm-stat-desc"><?php esc_html_e( 'países atendidos', 'pmportfolio' ); ?></div>
+				</div>
+
 			</div>
 		</div>
 	</div>
+</div>
 
 	<!-- SKILLS + EXPERIÊNCIA -->
 	<div style="background:var(--pm-bg0);padding:4rem 0;border-bottom:1px solid var(--pm-b2)">
@@ -131,105 +139,137 @@ $contato = home_url( '/contato/' );
 			<div class="row g-5">
 
 				<!-- SKILL BARS -->
-				<div class="col-lg-6">
-					<div class="pm-eyebrow mb-3"><?php esc_html_e( 'habilidades', 'pmportfolio' ); ?></div>
-					<h2 style="font-size:1.8rem;margin-bottom:2rem">
-						<?php esc_html_e( 'Stack & ', 'pmportfolio' ); ?>
-						<span style="color:var(--pm-gold)"><?php esc_html_e( 'especialidades', 'pmportfolio' ); ?></span>
-					</h2>
+				<!-- SKILL BARS -->
+<div class="col-lg-6">
+    <div class="pm-eyebrow mb-3"><?php esc_html_e( 'habilidades', 'pmportfolio' ); ?></div>
+    <h2 style="font-size:1.8rem;margin-bottom:2rem">
+        <?php esc_html_e( 'Stack & ', 'pmportfolio' ); ?>
+        <span style="color:var(--pm-gold)"><?php esc_html_e( 'especialidades', 'pmportfolio' ); ?></span>
+    </h2>
 
-					<?php
-					$skill_groups = [
-						__( 'Back-end', 'pmportfolio' ) => [
-							[ 'PHP 8.2',          95 ],
-							[ 'WordPress',        98 ],
-							[ 'MySQL / MariaDB',  88 ],
-							[ 'Laravel',          80 ],
-						],
-						__( 'Front-end & Build', 'pmportfolio' ) => [
-							[ 'JavaScript ES6+',  85 ],
-							[ 'CSS / Bootstrap 5',92 ],
-							[ 'Vite 5',           87 ],
-						],
-					];
-					foreach ( $skill_groups as $group_title => $skills ) :
-					?>
-					<div class="mb-4">
-						<div class="pm-skill-group-title"><?php echo esc_html( $group_title ); ?></div>
-						<?php foreach ( $skills as $skill ) : ?>
-						<div class="pm-skill-row">
-							<div class="pm-skill-label">
-								<span><?php echo esc_html( $skill[0] ); ?></span>
-								<span class="pm-skill-pct"><?php echo esc_html( $skill[1] ); ?>%</span>
-							</div>
-							<div class="pm-skill-bar-track">
-								<div class="pm-skill-bar-fill" data-w="<?php echo esc_attr( $skill[1] ); ?>"></div>
-							</div>
-						</div>
-						<?php endforeach; ?>
-					</div>
-					<?php endforeach; ?>
+    <?php
+    $skill_groups = [
+        __( 'Back-end', 'pmportfolio' ) => [
+            [ 'PHP 8.2',         95 ],
+            [ 'WordPress',       98 ],
+            [ 'MySQL / MariaDB', 88 ],
+            [ 'Laravel',         80 ],
+        ],
+        __( 'Front-end & Build', 'pmportfolio' ) => [
+            [ 'JavaScript ES6+',   85 ],
+            [ 'CSS / Bootstrap 5', 92 ],
+            [ 'Vite 5',            87 ],
+        ],
+    ];
+    foreach ( $skill_groups as $group_title => $skills ) :
+    ?>
+    <div class="mb-4">
+        <div class="pm-skill-group-title"><?php echo esc_html( $group_title ); ?></div>
+        <?php foreach ( $skills as $skill ) : ?>
+        <div class="pm-skill-row">
+            <div class="pm-skill-label">
+                <span><?php echo esc_html( $skill[0] ); ?></span>
+                <span class="pm-skill-pct"><?php echo esc_html( $skill[1] ); ?>%</span>
+            </div>
+            <div class="pm-skill-bar-track">
+                <div class="pm-skill-bar-fill" data-w="<?php echo esc_attr( $skill[1] ); ?>"></div>
+            </div>
+        </div>
+        <?php endforeach; ?>
+    </div>
+    <?php endforeach; ?>
 
-					<div style="font-family:var(--pm-fd);font-size:13px;font-weight:700;color:var(--pm-t1);margin-bottom:.75rem">
-						<?php esc_html_e( 'Outras ferramentas', 'pmportfolio' ); ?>
-					</div>
-					<div class="d-flex flex-wrap gap-2">
-						<?php
-						$tools = [ 'Git', 'Docker', 'Linux', 'Redis', 'REST API', 'SEO Técnico', 'Figma', 'WooCommerce' ];
-						foreach ( $tools as $tool ) :
-						?>
-							<span class="pm-stag"><?php echo esc_html( $tool ); ?></span>
-						<?php endforeach; ?>
-					</div>
-				</div>
+    <div class="pm-skill-group-title mb-2">
+        <?php esc_html_e( 'Outras ferramentas', 'pmportfolio' ); ?>
+    </div>
+    <div class="d-flex flex-wrap gap-2">
+        <?php
+        $tools = [ 'Git', 'Docker', 'Linux', 'Redis', 'REST API', 'SEO Técnico', 'Figma', 'WooCommerce' ];
+        foreach ( $tools as $tool ) :
+        ?>
+            <span class="pm-stag"><?php echo esc_html( $tool ); ?></span>
+        <?php endforeach; ?>
+    </div>
+</div>
 
 				<!-- TIMELINE EXPERIÊNCIA -->
-				<div class="col-lg-6">
-					<div class="pm-eyebrow mb-3"><?php esc_html_e( 'experiência', 'pmportfolio' ); ?></div>
-					<h2 style="font-size:1.8rem;margin-bottom:2rem">
-						<?php esc_html_e( 'Trajetória ', 'pmportfolio' ); ?>
-						<span style="color:var(--pm-gold)"><?php esc_html_e( 'profissional', 'pmportfolio' ); ?></span>
-					</h2>
+				<!-- TIMELINE EXPERIÊNCIA -->
+<div class="col-lg-6">
+    <div class="pm-eyebrow mb-3"><?php esc_html_e( 'experiência', 'pmportfolio' ); ?></div>
+    <h2 style="font-size:1.8rem;margin-bottom:2rem">
+        <?php esc_html_e( 'Trajetória ', 'pmportfolio' ); ?>
+        <span style="color:var(--pm-gold)"><?php esc_html_e( 'profissional', 'pmportfolio' ); ?></span>
+    </h2>
 
-					<div class="pm-tl">
-						<?php
-						$timeline = [
-							[
-								'period'  => __( '2022 — presente', 'pmportfolio' ),
-								'role'    => __( 'Engenheiro de Software Freelance', 'pmportfolio' ),
-								'company' => __( 'Autônomo · Remoto', 'pmportfolio' ),
-								'desc'    => __( 'Desenvolvimento de temas WordPress premium, sistemas SaaS e integrações complexas para clientes no Brasil e exterior.', 'pmportfolio' ),
-								'active'  => true,
-							],
-							[
-								'period'  => __( '2019 — 2022', 'pmportfolio' ),
-								'role'    => __( 'Desenvolvedor Full-Stack Sênior', 'pmportfolio' ),
-								'company' => __( 'Agência Digital · São Paulo', 'pmportfolio' ),
-								'desc'    => __( 'Liderava o time de desenvolvimento e arquitetura de soluções WordPress para clientes enterprise.', 'pmportfolio' ),
-								'active'  => false,
-							],
-							[
-								'period'  => __( '2016 — 2019', 'pmportfolio' ),
-								'role'    => __( 'Desenvolvedor PHP Pleno', 'pmportfolio' ),
-								'company' => __( 'Startup FinTech · Campinas', 'pmportfolio' ),
-								'desc'    => __( 'APIs REST, integrações com gateways financeiros e dashboards em PHP e Vue.js.', 'pmportfolio' ),
-								'active'  => false,
-							],
-						];
-						foreach ( $timeline as $item ) :
-							$dot_class = $item['active'] ? 'pm-tl-dot active-dot' : 'pm-tl-dot old';
-							$per_class = $item['active'] ? 'pm-tl-period' : 'pm-tl-period old';
-						?>
-						<div class="pm-tl-item">
-							<div class="<?php echo esc_attr( $dot_class ); ?>"></div>
-							<div class="<?php echo esc_attr( $per_class ); ?>"><?php echo esc_html( $item['period'] ); ?></div>
-							<div class="pm-tl-role"><?php echo esc_html( $item['role'] ); ?></div>
-							<div class="pm-tl-company"><?php echo esc_html( $item['company'] ); ?></div>
-							<p class="pm-tl-desc"><?php echo esc_html( $item['desc'] ); ?></p>
-						</div>
-						<?php endforeach; ?>
-					</div>
-				</div>
+    <div class="pm-tl">
+        <?php
+        $timeline = [
+            // VISÍVEIS por padrão (primeiros 2)
+            [
+                'period'  => __( '2022 — presente', 'pmportfolio' ),
+                'role'    => __( 'Engenheiro de Software Freelance', 'pmportfolio' ),
+                'company' => __( 'Autônomo · Remoto', 'pmportfolio' ),
+                'desc'    => __( 'Desenvolvimento de temas WordPress premium, sistemas SaaS e integrações complexas para clientes no Brasil e exterior.', 'pmportfolio' ),
+                'active'  => true,
+                'hidden'  => false,
+            ],
+            [
+                'period'  => __( '2020 — presente', 'pmportfolio' ),
+                'role'    => __( 'Coordenador de Marketing', 'pmportfolio' ),
+                'company' => __( 'Provedor de Internet · PR', 'pmportfolio' ),
+                'desc'    => __( 'Liderança de equipe com designer, filmmaker e gestor de tráfego. Estratégia digital, campanhas e gestão de marca.', 'pmportfolio' ),
+                'active'  => true,
+                'hidden'  => false,
+            ],
+            // OCULTOS — aparecem ao clicar "ver mais"
+            [
+                'period'  => __( '2019 — 2022', 'pmportfolio' ),
+                'role'    => __( 'Desenvolvedor Full-Stack Sênior', 'pmportfolio' ),
+                'company' => __( 'Agência Digital · São Paulo', 'pmportfolio' ),
+                'desc'    => __( 'Liderava o time de desenvolvimento e arquitetura de soluções WordPress para clientes enterprise.', 'pmportfolio' ),
+                'active'  => false,
+                'hidden'  => true,
+            ],
+            [
+                'period'  => __( '2016 — 2019', 'pmportfolio' ),
+                'role'    => __( 'Desenvolvedor PHP Pleno', 'pmportfolio' ),
+                'company' => __( 'Startup FinTech · Campinas', 'pmportfolio' ),
+                'desc'    => __( 'APIs REST, integrações com gateways financeiros e dashboards em PHP e Vue.js.', 'pmportfolio' ),
+                'active'  => false,
+                'hidden'  => true,
+            ],
+            [
+                'period'  => __( '2014 — 2016', 'pmportfolio' ),
+                'role'    => __( 'Desenvolvedor Web Júnior', 'pmportfolio' ),
+                'company' => __( 'Agência de Marketing · Curitiba', 'pmportfolio' ),
+                'desc'    => __( 'Desenvolvimento de sites e landing pages em WordPress. Primeiros passos com PHP e JavaScript.', 'pmportfolio' ),
+                'active'  => false,
+                'hidden'  => true,
+            ],
+        ];
+
+        foreach ( $timeline as $item ) :
+            $dot_class = $item['active'] ? 'pm-tl-dot active-dot' : 'pm-tl-dot old';
+            $per_class = $item['active'] ? 'pm-tl-period' : 'pm-tl-period old';
+            $hidden    = $item['hidden'] ? 'pm-tl-hidden' : '';
+        ?>
+        <div class="pm-tl-item <?php echo esc_attr( $hidden ); ?>">
+            <div class="<?php echo esc_attr( $dot_class ); ?>"></div>
+            <div class="<?php echo esc_attr( $per_class ); ?>"><?php echo esc_html( $item['period'] ); ?></div>
+            <div class="pm-tl-role"><?php echo esc_html( $item['role'] ); ?></div>
+            <div class="pm-tl-company"><?php echo esc_html( $item['company'] ); ?></div>
+            <p class="pm-tl-desc"><?php echo esc_html( $item['desc'] ); ?></p>
+        </div>
+        <?php endforeach; ?>
+    </div>
+
+    <!-- BOTÃO VER MAIS -->
+    <button class="pm-btn-ghost mt-3" id="pm-tl-more" onclick="pmToggleTimeline(this)">
+        <span><?php esc_html_e( 'ver mais experiências', 'pmportfolio' ); ?></span>
+        <span style="font-size:10px">↓</span>
+    </button>
+
+</div>
 
 			</div>
 		</div>

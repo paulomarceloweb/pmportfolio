@@ -1,0 +1,130 @@
+/* PMPortfolio — sobre.css */
+
+/* ── SKILL BARS ── */
+.pm-skill-bar-track {
+    height: 4px;
+    background: var(--pm-bg3);
+    border-radius: 2px;
+    overflow: hidden;
+    position: relative;
+}
+
+.pm-skill-bar-fill {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    border-radius: 2px;
+    background: linear-gradient(90deg, var(--pm-gold), var(--pm-goldl));
+    width: 0%;
+    transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.pm-skill-bar-fill.animated {
+    width: var(--bar-w) !important;
+}
+
+.pm-skill-row {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 1rem;
+}
+
+.pm-skill-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: var(--pm-fm);
+    font-size: 11px;
+    color: var(--pm-t2);
+    letter-spacing: .04em;
+}
+
+.pm-skill-pct {
+    color: var(--pm-gold);
+    font-weight: 500;
+}
+
+.pm-skill-group-title {
+    font-family: var(--pm-fd);
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--pm-t1);
+    letter-spacing: -.01em;
+    margin-bottom: .75rem;
+    margin-top: .25rem;
+}
+
+/* ── STATS GRID ── */
+.pm-stats-grid {
+    border: 1px solid var(--pm-b2);
+    border-radius: var(--pm-rl);
+    overflow: hidden;
+}
+
+.pm-stat-item {
+    background: var(--pm-bg1);
+    border-right: 1px solid var(--pm-b2);
+    padding: 1.75rem 1.5rem;
+    transition: background .2s;
+}
+
+.pm-stat-item:last-child {
+    border-right: none;
+}
+
+.pm-stat-item:hover {
+    background: var(--pm-bg2);
+}
+
+.pm-stat-lbl2 {
+    font-family: var(--pm-fm);
+    font-size: 9px;
+    color: var(--pm-t3);
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+}
+
+.pm-stat-big {
+    font-family: var(--pm-fd);
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: var(--pm-t1);
+    line-height: 1;
+}
+
+.pm-stat-big em {
+    color: var(--pm-gold);
+    font-style: normal;
+}
+
+.pm-stat-desc {
+    font-size: 12px;
+    color: var(--pm-t2);
+    font-weight: 300;
+    margin-top: 4px;
+}
+
+/* ── TIMELINE VER MAIS ── */
+.pm-tl-hidden {
+    display: none;
+}
+
+.pm-tl-hidden.visible {
+    display: block;
+    animation: pm-fadein .3s ease;
+}
+
+@keyframes pm-fadein {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

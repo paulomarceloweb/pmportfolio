@@ -70,24 +70,37 @@ function pmToggleFaq(btn) {
    Usa IntersectionObserver para animar
    apenas quando visível
 ══════════════════════════════════════ */
+/* ── SKILL BARS ── */
 function pmAnimateSkillBars() {
-  const bars = document.querySelectorAll('.pm-skill-bar-fill');
+  var bars = document.querySelectorAll('.pm-skill-bar-fill');
   if (!bars.length) return;
 
+  function animateBar(bar) {
+    // Força reflow antes de aplicar a largura
+    // sem isso a transição CSS não dispara
+    bar.style.width = '0%';
+    bar.offsetHeight; // lê propriedade para forçar reflow
+    setTimeout(function () {
+      bar.style.width = bar.dataset.w + '%';
+    }, 50);
+  }
+
   if ('IntersectionObserver' in window) {
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
         if (entry.isIntersecting) {
-          const bar = entry.target;
-          bar.style.width = bar.dataset.w + '%';
-          observer.unobserve(bar);
+          animateBar(entry.target);
+          observer.unobserve(entry.target);
         }
       });
     }, { threshold: 0.3 });
-    bars.forEach(bar => observer.observe(bar));
+
+    bars.forEach(function (bar) {
+      bar.style.width = '0%';
+      observer.observe(bar);
+    });
   } else {
-    // fallback
-    bars.forEach(bar => { bar.style.width = bar.dataset.w + '%'; });
+    bars.forEach(function (bar) { animateBar(bar); });
   }
 }
 
@@ -99,27 +112,27 @@ function pmAnimateSkillBars() {
 ══════════════════════════════════════ */
 function pmSubmitForm(opts = {}) {
   const {
-    nameId     = 'f-name',
-    emailId    = 'f-email',
-    serviceId  = 'f-service',
-    messageId  = 'f-message',
-    honeypotSel= '[name="website"]',
-    formId     = 'contact-form',
-    successId  = 'form-success',
-    errorId    = 'form-error',
-    submitId   = 'f-submit',
+    nameId = 'f-name',
+    emailId = 'f-email',
+    serviceId = 'f-service',
+    messageId = 'f-message',
+    honeypotSel = '[name="website"]',
+    formId = 'contact-form',
+    successId = 'form-success',
+    errorId = 'form-error',
+    submitId = 'f-submit',
     successMsg = 'Mensagem enviada! Responderei em até 24h.',
-    errRequired= 'Preencha todos os campos obrigatórios.',
-    errEmail   = 'Digite um e-mail válido.',
-    errHoney   = 'Erro de validação.',
+    errRequired = 'Preencha todos os campos obrigatórios.',
+    errEmail = 'Digite um e-mail válido.',
+    errHoney = 'Erro de validação.',
   } = opts;
 
-  const name    = document.getElementById(nameId)?.value.trim();
-  const email   = document.getElementById(emailId)?.value.trim();
+  const name = document.getElementById(nameId)?.value.trim();
+  const email = document.getElementById(emailId)?.value.trim();
   const service = document.getElementById(serviceId)?.value;
   const message = document.getElementById(messageId)?.value.trim();
-  const honey   = document.querySelector(honeypotSel)?.value;
-  const errEl   = document.getElementById(errorId);
+  const honey = document.querySelector(honeypotSel)?.value;
+  const errEl = document.getElementById(errorId);
 
   if (errEl) errEl.style.display = 'none';
 
@@ -156,10 +169,10 @@ function pmSubmitForm(opts = {}) {
 ══════════════════════════════════════ */
 function pmMcSubmit(opts = {}) {
   const {
-    inputId   = 'mc-email',
-    wrapSel   = '.pm-mc-form-wrap',
-    okId      = 'mc-ok',
-    okMsg     = '✓ Inscrito! Verifique seu e-mail.',
+    inputId = 'mc-email',
+    wrapSel = '.pm-mc-form-wrap',
+    okId = 'mc-ok',
+    okMsg = '✓ Inscrito! Verifique seu e-mail.',
   } = opts;
 
   const val = document.getElementById(inputId)?.value;
@@ -205,6 +218,58 @@ function pmTypewriter(elId, strings, speed = { type: 75, delete: 42, pause: 2200
   tick();
 }
 
+
+/* ── COUNTER ANIMATION ── */
+function pmAnimateCounters() {
+  var counters = document.querySelectorAll('.pm-stat-big, .pm-stat-num, .pm-stat-big-sobre');
+  if (!counters.length) return;
+  if (!('IntersectionObserver' in window)) return;
+
+  var observer = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (!entry.isIntersecting) return;
+
+      var el = entry.target;
+      var numNode = el.childNodes[0];
+      var text = numNode ? numNode.textContent.trim() : el.textContent.trim();
+      var match = text.match(/^(\d+)(.*)$/);
+      if (!match) return;
+
+      var target = parseInt(match[1], 10);
+      var suffix = match[2] || '';
+      var duration = 1400;
+      var steps = 45;
+      var step = 0;
+
+      var timer = setInterval(function () {
+        step++;
+        var ease = 1 - Math.pow(1 - step / steps, 3);
+        var current = Math.round(target * ease);
+
+        if (numNode && el.querySelector('em')) {
+          numNode.textContent = current;
+        } else {
+          el.textContent = current + suffix;
+        }
+
+        if (step >= steps) {
+          clearInterval(timer);
+          if (numNode && el.querySelector('em')) {
+            numNode.textContent = target;
+          } else {
+            el.textContent = target + suffix;
+          }
+        }
+      }, duration / steps);
+
+      observer.unobserve(el);
+    });
+  }, { threshold: 0.5 });
+
+  counters.forEach(function (el) { observer.observe(el); });
+}
+
+
 /* ══════════════════════════════════════
    INIT — roda no DOMContentLoaded
 ══════════════════════════════════════ */
@@ -221,4 +286,5 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Skill bars
   pmAnimateSkillBars();
+  pmAnimateCounters(); // ← adiciona esta linha
 });
