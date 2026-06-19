@@ -45,50 +45,55 @@ class Theme
 		(new \PMPortfolio\CPT\CPT_Registry())->register();
 
 		// Meta Boxes — 
-    	( new \PMPortfolio\Meta\Portfolio_Meta() )->register();
-    	( new \PMPortfolio\Meta\Service_Meta() )->register();
+		(new \PMPortfolio\Meta\Portfolio_Meta())->register();
+		(new \PMPortfolio\Meta\Service_Meta())->register();
+
+		// Multilíngue — carrega antes do SEO
+		(new \PMPortfolio\Multilingual\Language_Router())->register();
 
 		// Painel de opções — só carrega no admin
-    	if ( is_admin() ) {
-        	( new \PMPortfolio\Admin\Options_Page() )->register();
-    	}
+		if (is_admin()) {
+			(new \PMPortfolio\Admin\Options_Page())->register();
+		}
 
 		// SEO — apenas no frontend
-   		 if ( ! is_admin() ) {
-        	( new \PMPortfolio\SEO\SEO_Manager() )->register();
-    	}
-
+		if (! is_admin()) {
+			(new \PMPortfolio\SEO\SEO_Manager())->register();
+		}
 	}
 
 	/**
 	 * Registra hooks globais que pertencem ao tema em si,
 	 * não a um módulo específico.
 	 */
-	private function register_hooks(): void {
-    add_action( 'init',       [ $this, 'clean_wp_head' ] );
-    add_action( 'wp_head',    [ $this, 'inject_head_scripts' ], 99 );
-    add_action( 'wp_footer',  [ $this, 'inject_footer_scripts' ], 99 );
-}
+	private function register_hooks(): void
+	{
+		add_action('init',       [$this, 'clean_wp_head']);
+		add_action('wp_head',    [$this, 'inject_head_scripts'], 99);
+		add_action('wp_footer',  [$this, 'inject_footer_scripts'], 99);
+	}
 
-/**
- * Injeta scripts personalizados do painel no <head>.
- */
-public function inject_head_scripts(): void {
-    $scripts = \PMPortfolio\Admin\Settings_API::get( 'head_scripts' );
-    if ( $scripts ) {
-        echo wp_kses_post( $scripts ) . "\n";
-    }
-}
+	/**
+	 * Injeta scripts personalizados do painel no <head>.
+	 */
+	public function inject_head_scripts(): void
+	{
+		$scripts = \PMPortfolio\Admin\Settings_API::get('head_scripts');
+		if ($scripts) {
+			echo wp_kses_post($scripts) . "\n";
+		}
+	}
 
-/**
- * Injeta scripts personalizados do painel no rodapé.
- */
-public function inject_footer_scripts(): void {
-    $scripts = \PMPortfolio\Admin\Settings_API::get( 'footer_scripts' );
-    if ( $scripts ) {
-        echo wp_kses_post( $scripts ) . "\n";
-    }
-}
+	/**
+	 * Injeta scripts personalizados do painel no rodapé.
+	 */
+	public function inject_footer_scripts(): void
+	{
+		$scripts = \PMPortfolio\Admin\Settings_API::get('footer_scripts');
+		if ($scripts) {
+			echo wp_kses_post($scripts) . "\n";
+		}
+	}
 
 	/**
 	 * Remove itens desnecessários do <head> gerados pelo WordPress.

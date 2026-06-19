@@ -54,17 +54,36 @@ defined('ABSPATH') || exit;
             <!-- AÇÕES: IDIOMA + TEMA -->
             <div class="d-flex align-items-center gap-2">
 
+                <?php
+                // Detecta idioma diretamente pela URL — não depende do hook wp
+                $request_uri  = $_SERVER['REQUEST_URI'] ?? '/';
+                $home_path    = rtrim(parse_url(home_url('/'), PHP_URL_PATH) ?? '/', '/');
+                $relative     = '/' . ltrim(substr($request_uri, strlen($home_path)), '/');
+                $relative     = strtok($relative, '?');
+                $current_lang = str_starts_with($relative, '/en/') || $relative === '/en' ? 'en' : 'pt';
+
+                if ($current_lang === 'en') {
+                    $en_url = home_url($relative);
+                    $pt_url = home_url(preg_replace('#^/en(/|$)#', '/', $relative));
+                } else {
+                    $pt_url = home_url($relative);
+                    $en_url = home_url('/en' . $relative);
+                }
+                ?>
+
                 <div class="pm-lang-wrap"
                     role="group"
                     aria-label="<?php esc_attr_e('Selecionar idioma', 'pmportfolio'); ?>">
-                    <button class="pm-lang-btn on"
+                    <a class="pm-lang-btn <?php echo $current_lang === 'pt' ? 'on' : ''; ?>"
+                        href="<?php echo esc_url($pt_url); ?>"
                         data-lang="pt"
-                        onclick="pmSetLang('pt')"
-                        aria-label="Português">PT</button>
-                    <button class="pm-lang-btn"
+                        aria-label="Português"
+                        hreflang="pt-BR">PT</a>
+                    <a class="pm-lang-btn <?php echo $current_lang === 'en' ? 'on' : ''; ?>"
+                        href="<?php echo esc_url($en_url); ?>"
                         data-lang="en"
-                        onclick="pmSetLang('en')"
-                        aria-label="English">EN</button>
+                        aria-label="English"
+                        hreflang="en-US">EN</a>
                 </div>
 
                 <button class="pm-theme-btn"

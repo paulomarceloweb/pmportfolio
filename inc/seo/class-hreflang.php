@@ -1,4 +1,5 @@
 <?php
+
 /**
  * PMPortfolio — Hreflang
  *
@@ -27,35 +28,38 @@
 
 namespace PMPortfolio\SEO;
 
-defined( 'ABSPATH' ) || exit;
+defined('ABSPATH') || exit;
 
-class Hreflang {
+class Hreflang
+{
 
 	/**
 	 * @param array $context Contexto SEO calculado pelo SEO_Manager.
 	 */
-	public function __construct( private array $context ) {}
+	public function __construct(private array $context) {}
 
 	/**
 	 * Renderiza as tags hreflang.
 	 * Não renderiza em 404, busca ou quando não há canonical.
 	 */
-	public function render(): void {
+	public function render(): void
+	{
 
 		$canonical = $this->context['canonical'] ?? '';
 		$type      = $this->context['type']      ?? '';
 
-		// Não faz sentido em páginas sem URL canônica
-		if ( empty( $canonical ) || in_array( $type, [ '404', 'search' ], true ) ) {
+		if (empty($canonical) || in_array($type, ['404', 'search'], true)) {
 			return;
 		}
 
-		$url_pt = $canonical;
-		$url_en = $this->build_en_url( $canonical );
+		// Verifica se há tradução vinculada via _translation_id
+		$post    = $this->context['post'] ?? null;
+		$url_pt  = $canonical;
+		$url_en  = $this->build_en_url($canonical, $post);
 
-		echo '<link rel="alternate" hreflang="pt-BR" href="' . esc_url( $url_pt ) . '">' . "\n";
-		echo '<link rel="alternate" hreflang="en-US" href="' . esc_url( $url_en ) . '">' . "\n";
-		echo '<link rel="alternate" hreflang="x-default" href="' . esc_url( $url_pt ) . '">' . "\n";
+		echo '<link rel="alternate" hreflang="pt-BR" href="' . esc_url($url_pt) . '">' . "\n";
+		echo '<link rel="alternate" hreflang="en-US" href="' . esc_url($url_en) . '">' . "\n";
+		echo '<link rel="alternate" hreflang="x-default" href="' . esc_url($url_pt) . '">' . "\n";
 	}
 
 	/**
@@ -70,13 +74,23 @@ class Hreflang {
 	 * @param  string $pt_url URL em PT-BR.
 	 * @return string         URL equivalente em EN.
 	 */
-	private function build_en_url( string $pt_url ): string {
-		$home = home_url( '/' );
+	private function build_en_url(string $pt_url, ?\WP_Post $post = null): string
+	{
 
-		// Remove o home_url do início para pegar só o path
-		$path = str_replace( $home, '', $pt_url );
+		// Se o post tem tradução vinculada, usa a URL real
+		if ($post) {
+			$translation_id = get_post_meta($post->ID, '_translation_id', true);
+			if ($translation_id) {
+				$translation_url = get_permalink((int) $translation_id);
+				if ($translation_url) {
+					return $translation_url;
+				}
+			}
+		}
 
-		// Adiciona /en/ no início
+		// Fallback: adiciona /en/ no início do path
+		$home = home_url('/');
+		$path = str_replace($home, '', $pt_url);
 		return $home . 'en/' . $path;
 	}
 }

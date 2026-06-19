@@ -3,8 +3,11 @@
 
 defined('ABSPATH') || exit;
 ?>
+<?php
+$lang_attr = \PMPortfolio\Multilingual\Language_Manager::is('en') ? 'en-US' : 'pt-BR';
+?>
 <!DOCTYPE html>
-<html <?php language_attributes(); ?> data-theme="dark" data-bs-theme="dark">
+<html <?php language_attributes(); ?> data-theme="dark" data-bs-theme="dark" lang="<?php echo esc_attr($lang_attr); ?>">
 
 <head>
     <meta charset="<?php bloginfo('charset'); ?>">

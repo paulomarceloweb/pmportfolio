@@ -1,290 +1,293 @@
-/**
- * PMPortfolio — global.js
- * Compartilhado por todas as páginas
- * - Anti-flash dark mode (inline no <head> via script bloqueante)
- * - Language switcher
- * - Theme toggle
- * - FAQ accordion
- * - Form validation + honeypot
- * - Skill bars animation
- * - Newsletter Mailchimp submit
- */
+/* PMPortfolio — global.js */
 
-/* ══════════════════════════════════════
-   THEME — persiste no localStorage
-══════════════════════════════════════ */
+/* ── THEME ── */
 function pmInitTheme() {
-  const saved = localStorage.getItem('pmportfolio-theme');
-  const prefer = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-  const theme = saved || prefer;
+  var saved = localStorage.getItem("pmportfolio-theme");
+  var prefer = window.matchMedia("(prefers-color-scheme:dark)").matches
+    ? "dark"
+    : "light";
+  var theme = saved || prefer;
   document.documentElement.dataset.theme = theme;
-  document.documentElement.setAttribute('data-bs-theme', theme);
+  document.documentElement.setAttribute("data-bs-theme", theme);
 }
 
 function pmToggleTheme() {
-  const current = document.documentElement.dataset.theme;
-  const next = current === 'dark' ? 'light' : 'dark';
+  var current = document.documentElement.dataset.theme;
+  var next = current === "dark" ? "light" : "dark";
   document.documentElement.dataset.theme = next;
-  document.documentElement.setAttribute('data-bs-theme', next);
-  localStorage.setItem('pmportfolio-theme', next);
-  const btn = document.getElementById('pm-theme-btn');
-  if (btn) btn.textContent = next === 'dark' ? '☽' : '☀';
+  document.documentElement.setAttribute("data-bs-theme", next);
+  localStorage.setItem("pmportfolio-theme", next);
+  var btn = document.getElementById("pm-theme-btn");
+  if (btn) btn.textContent = next === "dark" ? "☽" : "☀";
 }
 
-/* ══════════════════════════════════════
-   LANGUAGE — cookie + URL /en/
-   No WordPress, a detecção real é feita via
-   Language_Router (PHP). Aqui é só o preview.
-══════════════════════════════════════ */
-let PM_LANG = document.documentElement.lang === 'en-US' ? 'en' : 'pt';
-let PM_STRINGS = {};
+/* ── LANGUAGE ── */
+
+// Detecta idioma pela URL — fonte de verdade
+var PM_LANG = (function () {
+  var path = window.location.pathname;
+  // Funciona em qualquer subdiretório ou raiz
+  // Verifica se /en/ está presente em qualquer posição do path
+  return /\/en(\/|$)/.test(path) ? "en" : "pt";
+})();
 
 function pmSetLang(l) {
-  PM_LANG = l;
-  document.querySelectorAll('.pm-lang-btn').forEach(b => {
-    b.classList.toggle('on', b.dataset.lang === l);
-  });
-  if (typeof pmApplyLang === 'function') pmApplyLang(l);
-  // cookie para persistência
-  document.cookie = `pmportfolio-lang=${l};path=/;max-age=31536000`;
-}
+  // Navegação real para URL do idioma em vez de troca JS
+  var path = window.location.pathname;
+  var basePath = "/pmportfolio";
+  var relative = path.replace(basePath, "") || "/";
 
-/* ══════════════════════════════════════
-   FAQ ACCORDION
-══════════════════════════════════════ */
-function pmToggleFaq(btn) {
-  const answer = btn.nextElementSibling;
-  const isOpen = answer.classList.contains('open');
-  // fecha todos
-  document.querySelectorAll('.pm-faq-a').forEach(el => el.classList.remove('open'));
-  document.querySelectorAll('.pm-faq-q').forEach(el => el.classList.remove('open'));
-  // abre o clicado (se estava fechado)
-  if (!isOpen) {
-    answer.classList.add('open');
-    btn.classList.add('open');
+  if (l === "en") {
+    // PT → EN: adiciona /en/
+    if (relative !== "/en" && relative.indexOf("/en/") !== 0) {
+      window.location.href = basePath + "/en" + relative;
+    }
+  } else {
+    // EN → PT: remove /en/
+    if (relative.indexOf("/en/") === 0) {
+      window.location.href = basePath + relative.replace("/en", "");
+    } else if (relative === "/en" || relative === "/en/") {
+      window.location.href = basePath + "/";
+    }
   }
 }
 
-/* ══════════════════════════════════════
-   SKILL BARS ANIMATION
-   Usa IntersectionObserver para animar
-   apenas quando visível
-══════════════════════════════════════ */
+/* ── FAQ ── */
+function pmToggleFaq(btn) {
+  var answer = btn.nextElementSibling;
+  var isOpen = answer.classList.contains("open");
+  document.querySelectorAll(".pm-faq-a").forEach(function (el) {
+    el.classList.remove("open");
+  });
+  document.querySelectorAll(".pm-faq-q").forEach(function (el) {
+    el.classList.remove("open");
+  });
+  if (!isOpen) {
+    answer.classList.add("open");
+    btn.classList.add("open");
+  }
+}
+
 /* ── SKILL BARS ── */
 function pmAnimateSkillBars() {
-  var bars = document.querySelectorAll('.pm-skill-bar-fill');
+  var bars = document.querySelectorAll(".pm-skill-bar-fill");
   if (!bars.length) return;
 
   function animateBar(bar) {
-    // Força reflow antes de aplicar a largura
-    // sem isso a transição CSS não dispara
-    bar.style.width = '0%';
-    bar.offsetHeight; // lê propriedade para forçar reflow
+    bar.style.transition = "none";
+    bar.style.width = "0%";
+    bar.offsetHeight;
+    bar.style.transition = "width 1.2s cubic-bezier(0.4, 0, 0.2, 1)";
     setTimeout(function () {
-      bar.style.width = bar.dataset.w + '%';
+      bar.style.width = (bar.dataset.w || "0") + "%";
     }, 50);
   }
 
-  if ('IntersectionObserver' in window) {
-    var observer = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (entry.isIntersecting) {
-          animateBar(entry.target);
-          observer.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.3 });
-
+  if ("IntersectionObserver" in window) {
+    var obs = new IntersectionObserver(
+      function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            animateBar(entry.target);
+            obs.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.3 },
+    );
     bars.forEach(function (bar) {
-      bar.style.width = '0%';
-      observer.observe(bar);
+      bar.style.width = "0%";
+      obs.observe(bar);
     });
   } else {
-    bars.forEach(function (bar) { animateBar(bar); });
+    bars.forEach(function (bar) {
+      animateBar(bar);
+    });
   }
 }
 
-/* ══════════════════════════════════════
-   FORMULÁRIO DE CONTATO
-   - Validação client-side
-   - Honeypot anti-spam
-   - Envio simulado (no WP: wp_ajax)
-══════════════════════════════════════ */
-function pmSubmitForm(opts = {}) {
-  const {
-    nameId = 'f-name',
-    emailId = 'f-email',
-    serviceId = 'f-service',
-    messageId = 'f-message',
-    honeypotSel = '[name="website"]',
-    formId = 'contact-form',
-    successId = 'form-success',
-    errorId = 'form-error',
-    submitId = 'f-submit',
-    successMsg = 'Mensagem enviada! Responderei em até 24h.',
-    errRequired = 'Preencha todos os campos obrigatórios.',
-    errEmail = 'Digite um e-mail válido.',
-    errHoney = 'Erro de validação.',
-  } = opts;
+/* ── COUNTER ANIMATION ── */
+function pmAnimateCounters() {
+  var counters = document.querySelectorAll(".pm-stat-big, .pm-stat-num");
+  if (!counters.length) return;
+  if (!("IntersectionObserver" in window)) return;
 
-  const name = document.getElementById(nameId)?.value.trim();
-  const email = document.getElementById(emailId)?.value.trim();
-  const service = document.getElementById(serviceId)?.value;
-  const message = document.getElementById(messageId)?.value.trim();
-  const honey = document.querySelector(honeypotSel)?.value;
-  const errEl = document.getElementById(errorId);
+  var obs = new IntersectionObserver(
+    function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
 
-  if (errEl) errEl.style.display = 'none';
+        var el = entry.target;
+        var numNode = el.childNodes[0];
+        var text = numNode ? numNode.textContent.trim() : el.textContent.trim();
+        var match = text.match(/^(\d+)(.*)$/);
+        if (!match) return;
 
-  // honeypot
-  if (honey) { if (errEl) { errEl.textContent = errHoney; errEl.style.display = 'block'; } return; }
+        var target = parseInt(match[1], 10);
+        var suffix = match[2] || "";
+        var steps = 45;
+        var step = 0;
+        var duration = 1400;
 
-  // required
-  if (!name || !email || !service || !message) {
-    if (errEl) { errEl.textContent = errRequired; errEl.style.display = 'block'; } return;
-  }
+        var timer = setInterval(function () {
+          step++;
+          var ease = 1 - Math.pow(1 - step / steps, 3);
+          var current = Math.round(target * ease);
 
-  // email format
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-    if (errEl) { errEl.textContent = errEmail; errEl.style.display = 'block'; } return;
-  }
+          if (numNode && el.querySelector("em")) {
+            numNode.textContent = current;
+          } else {
+            el.textContent = current + suffix;
+          }
 
-  const btn = document.getElementById(submitId);
-  if (btn) { btn.disabled = true; btn.textContent = '...'; }
+          if (step >= steps) {
+            clearInterval(timer);
+            if (numNode && el.querySelector("em")) {
+              numNode.textContent = target;
+            } else {
+              el.textContent = target + suffix;
+            }
+          }
+        }, duration / steps);
 
-  // No WordPress, aqui será uma chamada fetch para wp_ajax
-  // fetch(pmAjax.url, { method:'POST', body: new FormData(form) })
-  setTimeout(() => {
-    const formEl = document.getElementById(formId);
-    if (formEl) formEl.style.display = 'none';
-    const successEl = document.getElementById(successId);
-    if (successEl) { successEl.style.display = 'block'; successEl.textContent = '✓ ' + successMsg; }
-  }, 1200);
-}
+        obs.unobserve(el);
+      });
+    },
+    { threshold: 0.5 },
+  );
 
-/* ══════════════════════════════════════
-   NEWSLETTER MAILCHIMP
-   No WP: substituir por integração real
-   com Mailchimp API via wp_ajax
-══════════════════════════════════════ */
-function pmMcSubmit(opts = {}) {
-  const {
-    inputId = 'mc-email',
-    wrapSel = '.pm-mc-form-wrap',
-    okId = 'mc-ok',
-    okMsg = '✓ Inscrito! Verifique seu e-mail.',
-  } = opts;
-
-  const val = document.getElementById(inputId)?.value;
-  if (!val || !val.includes('@')) return;
-
-  const wrap = document.querySelector(wrapSel);
-  if (wrap) wrap.style.display = 'none';
-
-  const ok = document.getElementById(okId);
-  if (ok) { ok.style.display = 'block'; ok.textContent = okMsg; }
-}
-
-/* ══════════════════════════════════════
-   PORTFOLIO FILTER
-══════════════════════════════════════ */
-function pmFilterPortfolio(btn, cat, itemSel = '.pf-item') {
-  document.querySelectorAll('.pm-filter-btn, .pm-pf-btn').forEach(b => b.classList.remove('on'));
-  btn.classList.add('on');
-  document.querySelectorAll(itemSel).forEach(item => {
-    item.style.display = (cat === 'all' || item.dataset.cat === cat) ? '' : 'none';
+  counters.forEach(function (el) {
+    obs.observe(el);
   });
 }
 
-/* ══════════════════════════════════════
-   TYPEWRITER
-══════════════════════════════════════ */
-function pmTypewriter(elId, strings, speed = { type: 75, delete: 42, pause: 2200, next: 300 }) {
-  const el = document.getElementById(elId);
-  if (!el) return;
-  let si = 0, ci = 0, del = false;
+/* ── FORM ── */
+function pmSubmitForm(opts) {
+  var o = opts || {};
+  var nameEl = document.getElementById(o.nameId || "f-name");
+  var emailEl = document.getElementById(o.emailId || "f-email");
+  var serviceEl = document.getElementById(o.serviceId || "f-service");
+  var msgEl = document.getElementById(o.msgId || "f-message");
+  var honeyEl = document.querySelector('[name="website"]');
+  var errEl = document.getElementById(o.errorId || "form-error");
+  var okEl = document.getElementById(o.successId || "form-success");
+  var formEl = document.getElementById(o.formId || "contact-form");
+  var btnEl = document.getElementById(o.submitId || "f-submit");
 
+  if (errEl) errEl.style.display = "none";
+  if (honeyEl && honeyEl.value) {
+    if (errEl) {
+      errEl.textContent = "Erro.";
+      errEl.style.display = "block";
+    }
+    return;
+  }
+
+  var name = nameEl ? nameEl.value.trim() : "";
+  var email = emailEl ? emailEl.value.trim() : "";
+  var service = serviceEl ? serviceEl.value : "ok";
+  var message = msgEl ? msgEl.value.trim() : "";
+
+  if (!name || !email || !service || !message) {
+    if (errEl) {
+      errEl.textContent =
+        o.errRequired || "Preencha todos os campos obrigatórios.";
+      errEl.style.display = "block";
+    }
+    return;
+  }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    if (errEl) {
+      errEl.textContent = o.errEmail || "Digite um e-mail válido.";
+      errEl.style.display = "block";
+    }
+    return;
+  }
+
+  if (btnEl) {
+    btnEl.disabled = true;
+    btnEl.textContent = "Enviando...";
+  }
+
+  setTimeout(function () {
+    if (formEl) formEl.style.display = "none";
+    if (okEl) {
+      okEl.style.display = "block";
+      okEl.innerHTML =
+        "✓ " + (o.successMsg || "Mensagem enviada! Responderei em até 24h.");
+    }
+  }, 1200);
+}
+
+/* ── NEWSLETTER ── */
+function pmMcSubmit(inputId, wrapId, okId, okMsg) {
+  var inp = document.getElementById(inputId || "mc-email");
+  if (!inp || !inp.value || !inp.value.includes("@")) return;
+  var wrap = document.getElementById(wrapId || "mc-wrap");
+  var ok = document.getElementById(okId || "mc-ok");
+  if (wrap) wrap.style.display = "none";
+  if (ok) {
+    ok.style.display = "block";
+    ok.textContent = okMsg || "✓ Inscrito! Verifique seu e-mail.";
+  }
+}
+
+/* ── PORTFOLIO FILTER ── */
+function pmFilterPortfolio(btn, cat, itemSel) {
+  document.querySelectorAll(".pm-filter-btn").forEach(function (b) {
+    b.classList.remove("on");
+  });
+  btn.classList.add("on");
+  document.querySelectorAll(itemSel || ".pf-item").forEach(function (item) {
+    item.style.display =
+      cat === "all" || item.dataset.cat === cat ? "" : "none";
+  });
+}
+
+/* ── TYPEWRITER ── */
+function pmTypewriter(elId, strings, speed) {
+  var el = document.getElementById(elId);
+  if (!el) return;
+  speed = speed || { type: 75, delete: 42, pause: 2200, next: 300 };
+  var si = 0,
+    ci = 0,
+    del = false;
   function tick() {
-    const word = strings[si % strings.length];
+    var word = strings[si % strings.length];
     if (!del) {
       el.textContent = word.slice(0, ++ci);
-      if (ci === word.length) { del = true; setTimeout(tick, speed.pause); return; }
+      if (ci === word.length) {
+        del = true;
+        setTimeout(tick, speed.pause);
+        return;
+      }
     } else {
       el.textContent = word.slice(0, --ci);
-      if (ci === 0) { del = false; si++; setTimeout(tick, speed.next); return; }
+      if (ci === 0) {
+        del = false;
+        si++;
+        setTimeout(tick, speed.next);
+        return;
+      }
     }
     setTimeout(tick, del ? speed.delete : speed.type);
   }
   tick();
 }
 
+/* ── INIT ── */
+document.addEventListener("DOMContentLoaded", function () {
+  // Tema
+  var isDark = document.documentElement.dataset.theme === "dark";
+  var btn = document.getElementById("pm-theme-btn");
+  if (btn) btn.textContent = isDark ? "☽" : "☀";
 
-/* ── COUNTER ANIMATION ── */
-function pmAnimateCounters() {
-  var counters = document.querySelectorAll('.pm-stat-big, .pm-stat-num, .pm-stat-big-sobre');
-  if (!counters.length) return;
-  if (!('IntersectionObserver' in window)) return;
-
-  var observer = new IntersectionObserver(function (entries) {
-    entries.forEach(function (entry) {
-      if (!entry.isIntersecting) return;
-
-      var el = entry.target;
-      var numNode = el.childNodes[0];
-      var text = numNode ? numNode.textContent.trim() : el.textContent.trim();
-      var match = text.match(/^(\d+)(.*)$/);
-      if (!match) return;
-
-      var target = parseInt(match[1], 10);
-      var suffix = match[2] || '';
-      var duration = 1400;
-      var steps = 45;
-      var step = 0;
-
-      var timer = setInterval(function () {
-        step++;
-        var ease = 1 - Math.pow(1 - step / steps, 3);
-        var current = Math.round(target * ease);
-
-        if (numNode && el.querySelector('em')) {
-          numNode.textContent = current;
-        } else {
-          el.textContent = current + suffix;
-        }
-
-        if (step >= steps) {
-          clearInterval(timer);
-          if (numNode && el.querySelector('em')) {
-            numNode.textContent = target;
-          } else {
-            el.textContent = target + suffix;
-          }
-        }
-      }, duration / steps);
-
-      observer.unobserve(el);
-    });
-  }, { threshold: 0.5 });
-
-  counters.forEach(function (el) { observer.observe(el); });
-}
-
-
-/* ══════════════════════════════════════
-   INIT — roda no DOMContentLoaded
-══════════════════════════════════════ */
-document.addEventListener('DOMContentLoaded', () => {
-  // Atualiza ícone do botão de tema
-  const isDark = document.documentElement.dataset.theme === 'dark';
-  const themeBtn = document.getElementById('pm-theme-btn');
-  if (themeBtn) themeBtn.textContent = isDark ? '☽' : '☀';
-
-  // Marca lang btn ativo
-  document.querySelectorAll('.pm-lang-btn').forEach(b => {
-    b.classList.toggle('on', b.dataset.lang === PM_LANG);
+  // Marca botão de idioma ativo baseado na URL
+  document.querySelectorAll(".pm-lang-btn").forEach(function (b) {
+    b.classList.toggle("on", b.dataset.lang === PM_LANG);
   });
 
-  // Skill bars
+  // Animações
   pmAnimateSkillBars();
-  pmAnimateCounters(); // ← adiciona esta linha
+  pmAnimateCounters();
 });
