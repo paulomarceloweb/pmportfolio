@@ -35,30 +35,24 @@ class Theme
 	private function init_modules(): void
 	{
 
-		// Suporte a recursos nativos do WordPress
 		(new Theme_Support())->register();
-
-		// Enfileiramento condicional de CSS e JS por página
 		(new Asset_Manager())->register();
-
-		// Custom Post Types 
 		(new \PMPortfolio\CPT\CPT_Registry())->register();
-
-		// Meta Boxes — 
 		(new \PMPortfolio\Meta\Portfolio_Meta())->register();
 		(new \PMPortfolio\Meta\Service_Meta())->register();
-
-		// Multilíngue — carrega antes do SEO
 		(new \PMPortfolio\Multilingual\Language_Router())->register();
 
-		// Painel de opções — só carrega no admin
-		if (is_admin()) {
-			(new \PMPortfolio\Admin\Options_Page())->register();
-		}
+		// Sitemap e Robots — sempre registrados (verificam contexto internamente)
+		(new \PMPortfolio\SEO\Sitemap())->register();
+		(new \PMPortfolio\SEO\Robots())->register();
 
-		// SEO — apenas no frontend
 		if (! is_admin()) {
 			(new \PMPortfolio\SEO\SEO_Manager())->register();
+		}
+
+		if (is_admin()) {
+			(new \PMPortfolio\Admin\Options_Page())->register();
+			(new \PMPortfolio\SEO\SEO_Meta_Box())->register();
 		}
 	}
 

@@ -57,3 +57,10 @@ require_once PMPORTFOLIO_DIR . '/inc/core/class-autoloader.php';
 // ─────────────────────────────────────────────────────
 
 (new PMPortfolio\Core\Theme())->boot();
+
+
+// DIAGNÓSTICO TEMPORÁRIO
+add_action('init', function () {
+    error_log('Sitemap class exists: ' . (class_exists('PMPortfolio\SEO\Sitemap') ? 'YES' : 'NO'));
+    error_log('Robots class exists: ' . (class_exists('PMPortfolio\SEO\Robots') ? 'YES' : 'NO'));
+});

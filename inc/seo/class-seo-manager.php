@@ -1,4 +1,5 @@
 <?php
+
 /**
  * PMPortfolio — SEO Manager
  *
@@ -21,9 +22,10 @@ namespace PMPortfolio\SEO;
 
 use PMPortfolio\Admin\Settings_API;
 
-defined( 'ABSPATH' ) || exit;
+defined('ABSPATH') || exit;
 
-class SEO_Manager {
+class SEO_Manager
+{
 
 	/**
 	 * Contexto calculado da página atual.
@@ -36,17 +38,18 @@ class SEO_Manager {
 	/**
 	 * Registra os hooks do sistema de SEO.
 	 */
-	public function register(): void {
+	public function register(): void
+	{
 
 		// Remove o <title> padrão do WordPress
 		// Vamos gerar o nosso próprio com mais controle
-		remove_action( 'wp_head', '_wp_render_title_tag', 1 );
+		remove_action('wp_head', '_wp_render_title_tag', 1);
 
 		// Calcula o contexto antes de qualquer output
-		add_action( 'wp', [ $this, 'build_context' ] );
+		add_action('wp', [$this, 'build_context']);
 
 		// Injeta todas as meta tags no <head>
-		add_action( 'wp_head', [ $this, 'render_all' ], 1 );
+		add_action('wp_head', [$this, 'render_all'], 1);
 	}
 
 	/**
@@ -54,22 +57,23 @@ class SEO_Manager {
 	 * Chamado no hook 'wp' — após o WordPress identificar
 	 * qual página está sendo carregada, mas antes de qualquer output.
 	 */
-	public function build_context(): void {
+	public function build_context(): void
+	{
 
 		global $post;
 
-		$separator   = Settings_API::get( 'title_separator', '—' );
-		$site_name   = get_bloginfo( 'name' );
-		$og_image    = Settings_API::get( 'og_image' );
-		$robots      = Settings_API::get( 'robots_default', 'index, follow' );
+		$separator   = Settings_API::get('title_separator', '—');
+		$site_name   = get_bloginfo('name');
+		$og_image    = Settings_API::get('og_image');
+		$robots      = Settings_API::get('robots_default', 'index, follow');
 
 		// ── HOME ──────────────────────────────────────────
-		if ( is_front_page() ) {
+		if (is_front_page()) {
 			$this->context = [
 				'type'        => 'home',
-				'title'       => $site_name . ' ' . $separator . ' ' . get_bloginfo( 'description' ),
-				'description' => get_bloginfo( 'description' ),
-				'canonical'   => home_url( '/' ),
+				'title'       => $site_name . ' ' . $separator . ' ' . get_bloginfo('description'),
+				'description' => get_bloginfo('description'),
+				'canonical'   => home_url('/'),
 				'og_type'     => 'website',
 				'og_image'    => $og_image,
 				'robots'      => $robots,
@@ -79,40 +83,43 @@ class SEO_Manager {
 		}
 
 		// ── SINGLE POST ───────────────────────────────────
-		if ( is_singular() && $post ) {
+		if (is_singular() && $post) {
 
-			// Título SEO customizado (meta box) ou título do post
-			$seo_title = get_post_meta( $post->ID, '_seo_title', true );
+			$seo_title = get_post_meta($post->ID, '_seo_title', true);
 			$title     = $seo_title
 				? $seo_title . ' ' . $separator . ' ' . $site_name
-				: get_the_title( $post ) . ' ' . $separator . ' ' . $site_name;
+				: get_the_title($post) . ' ' . $separator . ' ' . $site_name;
 
-			// Descrição SEO customizada, excerpt ou primeiras palavras do conteúdo
-			$seo_desc = get_post_meta( $post->ID, '_seo_description', true );
-			if ( $seo_desc ) {
+			$seo_desc = get_post_meta($post->ID, '_seo_description', true);
+			if ($seo_desc) {
 				$description = $seo_desc;
-			} elseif ( $post->post_excerpt ) {
-				$description = wp_strip_all_tags( $post->post_excerpt );
+			} elseif ($post->post_excerpt) {
+				$description = wp_strip_all_tags($post->post_excerpt);
 			} else {
 				$description = wp_trim_words(
-					wp_strip_all_tags( $post->post_content ),
+					wp_strip_all_tags($post->post_content),
 					30,
 					'...'
 				);
 			}
 
-			// Imagem OG — thumbnail do post ou padrão do painel
-			$thumb_id = get_post_thumbnail_id( $post->ID );
+			// noindex manual via meta box ← ADICIONA AQUI
+			$seo_noindex = get_post_meta($post->ID, '_seo_noindex', true);
+			if ($seo_noindex) {
+				$robots = 'noindex, nofollow';
+			}
+
+			$thumb_id = get_post_thumbnail_id($post->ID);
 			$thumb    = $thumb_id
-				? wp_get_attachment_image_url( $thumb_id, 'pm-portfolio' )
+				? wp_get_attachment_image_url($thumb_id, 'pm-portfolio')
 				: $og_image;
 
 			$this->context = [
 				'type'        => 'single',
-				'post_type'   => get_post_type( $post ),
+				'post_type'   => get_post_type($post),
 				'title'       => $title,
 				'description' => $description,
-				'canonical'   => get_permalink( $post ),
+				'canonical'   => get_permalink($post),
 				'og_type'     => 'article',
 				'og_image'    => $thumb,
 				'robots'      => $robots,
@@ -122,15 +129,15 @@ class SEO_Manager {
 		}
 
 		// ── ARCHIVE CPT ───────────────────────────────────
-		if ( is_post_type_archive() ) {
+		if (is_post_type_archive()) {
 			$post_type_obj = get_queried_object();
 			$label         = $post_type_obj->labels->name ?? '';
 
 			$this->context = [
 				'type'        => 'archive',
 				'title'       => $label . ' ' . $separator . ' ' . $site_name,
-				'description' => $post_type_obj->description ?? get_bloginfo( 'description' ),
-				'canonical'   => get_post_type_archive_link( get_post_type() ),
+				'description' => $post_type_obj->description ?? get_bloginfo('description'),
+				'canonical'   => get_post_type_archive_link(get_post_type()),
 				'og_type'     => 'website',
 				'og_image'    => $og_image,
 				'robots'      => $robots,
@@ -140,14 +147,14 @@ class SEO_Manager {
 		}
 
 		// ── CATEGORIA / TAG ───────────────────────────────
-		if ( is_category() || is_tag() || is_tax() ) {
+		if (is_category() || is_tag() || is_tax()) {
 			$term = get_queried_object();
 
 			$this->context = [
 				'type'        => 'taxonomy',
 				'title'       => $term->name . ' ' . $separator . ' ' . $site_name,
-				'description' => $term->description ?: get_bloginfo( 'description' ),
-				'canonical'   => get_term_link( $term ),
+				'description' => $term->description ?: get_bloginfo('description'),
+				'canonical'   => get_term_link($term),
 				'og_type'     => 'website',
 				'og_image'    => $og_image,
 				'robots'      => $robots,
@@ -157,10 +164,10 @@ class SEO_Manager {
 		}
 
 		// ── BUSCA ─────────────────────────────────────────
-		if ( is_search() ) {
+		if (is_search()) {
 			$this->context = [
 				'type'        => 'search',
-				'title'       => __( 'Busca', 'pmportfolio' ) . ' ' . $separator . ' ' . $site_name,
+				'title'       => __('Busca', 'pmportfolio') . ' ' . $separator . ' ' . $site_name,
 				'description' => '',
 				'canonical'   => '',
 				'og_type'     => 'website',
@@ -172,7 +179,7 @@ class SEO_Manager {
 		}
 
 		// ── 404 ───────────────────────────────────────────
-		if ( is_404() ) {
+		if (is_404()) {
 			$this->context = [
 				'type'        => '404',
 				'title'       => '404 ' . $separator . ' ' . $site_name,
@@ -190,8 +197,8 @@ class SEO_Manager {
 		$this->context = [
 			'type'        => 'default',
 			'title'       => $site_name,
-			'description' => get_bloginfo( 'description' ),
-			'canonical'   => home_url( '/' ),
+			'description' => get_bloginfo('description'),
+			'canonical'   => home_url('/'),
 			'og_type'     => 'website',
 			'og_image'    => $og_image,
 			'robots'      => $robots,
@@ -203,19 +210,20 @@ class SEO_Manager {
 	 * Renderiza todas as meta tags no <head>.
 	 * Delega para cada módulo especializado.
 	 */
-	public function render_all(): void {
+	public function render_all(): void
+	{
 
-		if ( empty( $this->context ) ) {
+		if (empty($this->context)) {
 			return;
 		}
 
 		echo "\n<!-- PMPortfolio SEO -->\n";
 
-		( new Meta_Tags( $this->context ) )->render();
-		( new Open_Graph( $this->context ) )->render();
-		( new Twitter_Cards( $this->context ) )->render();
-		( new Hreflang( $this->context ) )->render();
-		( new Schema( $this->context ) )->render();
+		(new Meta_Tags($this->context))->render();
+		(new Open_Graph($this->context))->render();
+		(new Twitter_Cards($this->context))->render();
+		(new Hreflang($this->context))->render();
+		(new Schema($this->context))->render();
 
 		echo "<!-- /PMPortfolio SEO -->\n\n";
 	}
@@ -226,7 +234,8 @@ class SEO_Manager {
 	 *
 	 * @return array
 	 */
-	public function get_context(): array {
+	public function get_context(): array
+	{
 		return $this->context;
 	}
 }
