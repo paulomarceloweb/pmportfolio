@@ -68,10 +68,26 @@ class Theme
 	}
 
 	/**
-	 * Injeta scripts personalizados do painel no <head>.
+	 * Injeta GTM + scripts personalizados no <head>.
 	 */
 	public function inject_head_scripts(): void
 	{
+
+		$gtm_id = \PMPortfolio\Admin\Settings_API::get('gtm_id');
+
+		// Google Tag Manager — snippet oficial
+		if ($gtm_id) {
+			$gtm_id = esc_js($gtm_id);
+			echo "<!-- Google Tag Manager -->\n";
+			echo "<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':\n";
+			echo "new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],\n";
+			echo "j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=\n";
+			echo "'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);\n";
+			echo "})(window,document,'script','dataLayer','{$gtm_id}');</script>\n";
+			echo "<!-- End Google Tag Manager -->\n\n";
+		}
+
+		// Scripts personalizados do painel
 		$scripts = \PMPortfolio\Admin\Settings_API::get('head_scripts');
 		if ($scripts) {
 			echo wp_kses_post($scripts) . "\n";
@@ -79,10 +95,24 @@ class Theme
 	}
 
 	/**
-	 * Injeta scripts personalizados do painel no rodapé.
+	 * Injeta GTM noscript + scripts personalizados no rodapé.
 	 */
 	public function inject_footer_scripts(): void
 	{
+
+		$gtm_id = \PMPortfolio\Admin\Settings_API::get('gtm_id');
+
+		// GTM noscript — obrigatório logo após o <body>
+		// Como não temos acesso direto ao <body>, colocamos no wp_footer
+		if ($gtm_id) {
+			$gtm_id = esc_attr($gtm_id);
+			echo "<!-- Google Tag Manager (noscript) -->\n";
+			echo "<noscript><iframe src=\"https://www.googletagmanager.com/ns.html?id={$gtm_id}\"\n";
+			echo "height=\"0\" width=\"0\" style=\"display:none;visibility:hidden\"></iframe></noscript>\n";
+			echo "<!-- End Google Tag Manager (noscript) -->\n\n";
+		}
+
+		// Scripts personalizados do painel
 		$scripts = \PMPortfolio\Admin\Settings_API::get('footer_scripts');
 		if ($scripts) {
 			echo wp_kses_post($scripts) . "\n";
