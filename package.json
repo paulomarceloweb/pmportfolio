@@ -1,0 +1,26 @@
+{
+  "name": "pmportfolio",
+  "version": "1.0.0",
+  "description": "<<<<<<< HEAD\r # PMPortfolio",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vite build --watch",
+    "build": "NODE_ENV=production vite build",
+    "build:win": "set NODE_ENV=production && vite build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/paulomarceloweb/pmportfolio.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/paulomarceloweb/pmportfolio/issues"
+  },
+  "homepage": "https://github.com/paulomarceloweb/pmportfolio#readme",
+  "devDependencies": {
+    "vite": "^8.0.16"
+  }
+}
