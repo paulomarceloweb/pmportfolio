@@ -15,6 +15,7 @@ get_header();
     get_template_part('template-parts/sections/sobre-preview');
     get_template_part('template-parts/sections/servicos-featured');
     get_template_part('template-parts/sections/portfolio-featured');
+    get_template_part('template-parts/sections/blog-preview');
     get_template_part('template-parts/sections/cta');
     get_template_part('template-parts/sections/newsletter');
 

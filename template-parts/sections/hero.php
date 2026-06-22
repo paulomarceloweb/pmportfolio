@@ -111,10 +111,10 @@ use PMPortfolio\Multilingual\Language_Manager;
                         <div class="pm-ln"><span class="pm-ln-n">8</span><span style="color:var(--pm-t3)">}</span><span class="pm-code-cur"></span></div>
                     </div>
                     <div class="d-flex flex-wrap gap-1 p-2" style="border-top:1px solid var(--pm-b2)">
-                        <span class="pm-badge pm-badge-gold">PHP 8.2</span>
-                        <span class="pm-badge pm-badge-gold">WordPress 6.4</span>
-                        <span class="pm-badge pm-badge-teal">Bootstrap 5.3</span>
-                        <span class="pm-badge pm-badge-purple">PSR-4</span>
+                        <span class="pm-badge pm-badge-gold">PHP 8</span>
+                        <span class="pm-badge pm-badge-gold">WordPress</span>
+                        <span class="pm-badge pm-badge-teal">Photoshop</span>
+                        <span class="pm-badge pm-badge-purple">Marketing Tech</span>
                     </div>
                 </div>
             </div>

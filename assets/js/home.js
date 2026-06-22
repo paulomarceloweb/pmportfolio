@@ -2,27 +2,34 @@
 
 var HOME_STRINGS = {
   pt: {
-    "h-status": "disponível para projetos",
+    // Hero
+    "h-status": "disponível para projetos remotos",
     "h-desc":
-      "Construo <strong>sistemas que escalam</strong> — do banco de dados ao pixel. Especialista em arquitetura web, performance e experiências que <strong>convertem código em resultado</strong>.",
+      "Desenvolvo <strong>ecossistemas WordPress de alta performance</strong> — do zero ao deploy. Full-Stack Developer e Marketing Tech Leader com foco em <strong>código que converte</strong>.",
     "h-btn1": "Ver portfólio →",
     "h-btn2": "Falar comigo",
-    "h-s1": "projetos",
+    "h-s1": "empresas",
     "h-s2": "anos de exp.",
-    "h-s3": "clientes",
-    st1: "entregues com sucesso",
-    st2: "anos de desenvolvimento",
-    st3: "em 4 países",
+    "h-s3": "filiais",
+
+    // Stats section
+    st1: "no Grupo Motta",
+    st2: "anos com WordPress",
+    st3: "atendidas",
     st4: "score PageSpeed",
+
+    // Sobre preview
     "sp-ey": "sobre mim",
     "sp-badge": "anos de código",
     "sp-h":
-      'Engenheiro que <span style="color:var(--pm-gold)">pensa em sistemas</span>',
+      'Desenvolvedor que <span style="color:var(--pm-gold)">une código e resultado</span>',
     "sp-p1":
-      "Trabalho na interseção entre <strong>arquitetura técnica robusta</strong> e produto que as pessoas realmente usam.",
+      "Sou um WordPress Developer Full-Stack com uma combinação rara: escrevo código limpo e escalável <strong>e</strong> entendo o que gera conversão.",
     "sp-p2":
-      "Com foco em <strong>WordPress, PHP 8 e ecosistema moderno</strong>, construo desde temas premium performáticos até APIs e integrações complexas.",
+      "Liderando a tecnologia de marketing do <strong>Grupo Motta</strong> — 10+ empresas, 50+ filiais — com PHP 8, Vite e OOP.",
     "sp-btn": "Conhecer minha história →",
+
+    // Serviços
     "sv-ey": "serviços",
     "sv-h":
       'O que posso <span style="color:var(--pm-gold)">fazer por você</span>',
@@ -32,52 +39,66 @@ var HOME_STRINGS = {
     "sv1-price": "a partir de <strong>R$ 3.500</strong>",
     "sv2-title": "Otimização & Performance",
     "sv2-desc":
-      "Auditoria completa e refactoring focado em Core Web Vitals, cache, lazy loading e eliminação de bloqueios.",
+      "Auditoria completa e refactoring focado em Core Web Vitals, cache, lazy loading e eliminação de bloqueios de renderização.",
     "sv2-price": "a partir de <strong>R$ 1.200</strong>",
-    "sv3-title": "API & Integrações",
+    "sv3-title": "Marketing Tech & Integrações",
     "sv3-desc":
-      "REST API customizada, webhooks, integrações com CRMs, gateways de pagamento e serviços de terceiros.",
-    "sv3-price": "a partir de <strong>R$ 2.000</strong>",
+      "GTM, pixels de conversão, automações com Mailchimp, Google Ads e Meta Ads integrados ao seu WordPress.",
+    "sv3-price": "a partir de <strong>R$ 1.500</strong>",
+
+    // Portfólio
     "pt-ey": "portfólio",
     "pt-h": 'Projetos <span style="color:var(--pm-gold)">em destaque</span>',
     "pf-all": "todos",
     "pt-more": "Ver todos os projetos →",
+
+    // CTA
     "cta-ey": "vamos trabalhar juntos",
     "cta-h":
       'Tem um projeto? <span style="color:var(--pm-gold)">Vamos conversar.</span>',
     "cta-p":
-      "Estou disponível para projetos freelance, consultorias e posições em produto. Respondo em até 24h.",
+      "Disponível para projetos freelance, consultorias e posições remotas. Respondo em até 24h.",
     "cta-b1": "Enviar mensagem →",
     "cta-b2": "Ver portfólio",
+
+    // Newsletter
     "mc-ey": "newsletter",
     "mc-h": "Conteúdo técnico na sua caixa de entrada",
     "mc-p":
-      "PHP avançado, WordPress internals, performance — sem spam, sem papo furado.",
+      "WordPress, PHP 8, performance e marketing tech — sem spam, sem enrolação.",
     "mc-note": "✦ sem spam · cancele quando quiser · via Mailchimp",
     "mc-btn": "Inscrever",
   },
+
   en: {
-    "h-status": "available for projects",
+    // Hero
+    "h-status": "available for remote projects",
     "h-desc":
-      "I build <strong>systems that scale</strong> — from database to pixel. Specialist in web architecture, performance and experiences that <strong>turn code into results</strong>.",
+      "I build <strong>high-performance WordPress ecosystems</strong> — from scratch to deploy. Full-Stack Developer and Marketing Tech Leader focused on <strong>code that converts</strong>.",
     "h-btn1": "View portfolio →",
     "h-btn2": "Get in touch",
-    "h-s1": "projects",
+    "h-s1": "companies",
     "h-s2": "years exp.",
-    "h-s3": "clients",
-    st1: "successfully delivered",
-    st2: "years of development",
-    st3: "across 4 countries",
+    "h-s3": "branches",
+
+    // Stats section
+    st1: "in Grupo Motta",
+    st2: "years with WordPress",
+    st3: "locations served",
     st4: "PageSpeed score",
+
+    // Sobre preview
     "sp-ey": "about me",
     "sp-badge": "years of code",
     "sp-h":
-      'Engineer who <span style="color:var(--pm-gold)">thinks in systems</span>',
+      'Developer who <span style="color:var(--pm-gold)">bridges code and growth</span>',
     "sp-p1":
-      "I work at the intersection of <strong>robust technical architecture</strong> and products people actually use.",
+      "I'm a Full-Stack WordPress Developer with a rare combination: I write clean, scalable code <strong>and</strong> understand what drives conversions.",
     "sp-p2":
-      "Focused on <strong>WordPress, PHP 8 and modern ecosystem</strong>, I build from premium themes to complex APIs.",
+      "Leading marketing technology at <strong>Grupo Motta</strong> — 10+ companies, 50+ branches — using PHP 8, Vite and OOP.",
     "sp-btn": "Learn my story →",
+
+    // Services
     "sv-ey": "services",
     "sv-h": 'What I can <span style="color:var(--pm-gold)">do for you</span>',
     "sv1-title": "Premium WordPress Theme",
@@ -88,25 +109,31 @@ var HOME_STRINGS = {
     "sv2-desc":
       "Full audit and refactoring focused on Core Web Vitals, caching, lazy loading and render-blocking elimination.",
     "sv2-price": "starting at <strong>$240</strong>",
-    "sv3-title": "API & Integrations",
+    "sv3-title": "Marketing Tech & Integrations",
     "sv3-desc":
-      "Custom REST API, webhooks, CRM integrations, payment gateways and third-party services.",
-    "sv3-price": "starting at <strong>$400</strong>",
+      "GTM, conversion pixels, Mailchimp automations, Google Ads and Meta Ads integrated into your WordPress.",
+    "sv3-price": "starting at <strong>$300</strong>",
+
+    // Portfolio
     "pt-ey": "portfolio",
     "pt-h": 'Featured <span style="color:var(--pm-gold)">projects</span>',
     "pf-all": "all",
     "pt-more": "View all projects →",
+
+    // CTA
     "cta-ey": "let's work together",
     "cta-h":
       'Have a project? <span style="color:var(--pm-gold)">Let\'s talk.</span>',
     "cta-p":
-      "Available for freelance, consulting and product positions. I reply within 24h.",
+      "Available for freelance projects, consulting and remote positions. I reply within 24h.",
     "cta-b1": "Send message →",
     "cta-b2": "View portfolio",
+
+    // Newsletter
     "mc-ey": "newsletter",
     "mc-h": "Technical content in your inbox",
     "mc-p":
-      "Advanced PHP, WordPress internals, performance — no spam, no fluff.",
+      "WordPress, PHP 8, performance and marketing tech — no spam, no fluff.",
     "mc-note": "✦ no spam · unsubscribe anytime · via Mailchimp",
     "mc-btn": "Subscribe",
   },
@@ -114,14 +141,14 @@ var HOME_STRINGS = {
 
 var TYPED_STRINGS = {
   pt: [
-    "Engenheiro de Software",
-    "Arquiteto WordPress",
+    "WordPress Developer",
+    "Marketing Tech Leader",
     "Dev Full-Stack",
-    "Especialista PHP 8",
+    "PHP 8 Specialist",
   ],
   en: [
-    "Software Engineer",
-    "WordPress Architect",
+    "WordPress Developer",
+    "Marketing Tech Leader",
     "Full-Stack Dev",
     "PHP 8 Specialist",
   ],
@@ -136,7 +163,6 @@ function pmApplyLang(lang) {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
-  // Detecta idioma pelo path em qualquer posição — funciona em subdiretório
   var lang = /\/en(\/|$)/.test(window.location.pathname) ? "en" : "pt";
 
   pmApplyLang(lang);

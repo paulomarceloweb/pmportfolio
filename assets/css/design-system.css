@@ -5,91 +5,92 @@
  */
 
 /* ─── GOOGLE FONTS ─── */
-@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=JetBrains+Mono:wght@400;500&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap');
+/* @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=JetBrains+Mono:wght@400;500&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap'); */
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap");
 
 /* ─── DARK MODE (padrão) ─── */
 :root,
 [data-theme="dark"] {
   /* Superfícies */
-  --pm-bg0:        #0a0a0f;
-  --pm-bg1:        #0f0f1a;
-  --pm-bg2:        #151525;
-  --pm-bg3:        #1c1c30;
-  --pm-bgc:        #12121e;
+  --pm-bg0: #0a0a0f;
+  --pm-bg1: #0f0f1a;
+  --pm-bg2: #151525;
+  --pm-bg3: #1c1c30;
+  --pm-bgc: #12121e;
 
   /* Gold — accent principal */
-  --pm-gold:       #c9a84c;
-  --pm-goldl:      #e8c97a;
-  --pm-goldm:      rgba(201,168,76,.12);
-  --pm-goldb:      rgba(201,168,76,.18);
+  --pm-gold: #c9a84c;
+  --pm-goldl: #e8c97a;
+  --pm-goldm: rgba(201, 168, 76, 0.12);
+  --pm-goldb: rgba(201, 168, 76, 0.18);
 
   /* Teal — accent secundário */
-  --pm-teal:       #4ce3c9;
-  --pm-tealm:      rgba(76,227,201,.10);
-  --pm-tealb:      rgba(76,227,201,.18);
+  --pm-teal: #4ce3c9;
+  --pm-tealm: rgba(76, 227, 201, 0.1);
+  --pm-tealb: rgba(76, 227, 201, 0.18);
 
   /* Purple — accent terciário */
-  --pm-purple:     #a89bbf;
-  --pm-purplem:    rgba(140,120,255,.10);
-  --pm-purpleb:    rgba(140,120,255,.20);
+  --pm-purple: #a89bbf;
+  --pm-purplem: rgba(140, 120, 255, 0.1);
+  --pm-purpleb: rgba(140, 120, 255, 0.2);
 
   /* Tipografia */
-  --pm-t1:         #f0ede6;
-  --pm-t2:         #9896a4;
-  --pm-t3:         #5c5a6e;
-  --pm-tinv:       #0a0a0f;
+  --pm-t1: #f0ede6;
+  --pm-t2: #9896a4;
+  --pm-t3: #5c5a6e;
+  --pm-tinv: #0a0a0f;
 
   /* Bordas */
-  --pm-b1:         rgba(201,168,76,.18);
-  --pm-b2:         rgba(255,255,255,.06);
-  --pm-b3:         rgba(255,255,255,.03);
+  --pm-b1: rgba(201, 168, 76, 0.18);
+  --pm-b2: rgba(255, 255, 255, 0.06);
+  --pm-b3: rgba(255, 255, 255, 0.03);
 
   /* Fontes */
-  --pm-fd:         'Syne', sans-serif;
-  --pm-fb:         'DM Sans', sans-serif;
-  --pm-fm:         'JetBrains Mono', monospace;
+  --pm-fd: "Google Sans", sans-serif;
+  --pm-fb: "DM Sans", sans-serif;
+  --pm-fm: "JetBrains Mono", monospace;
 
   /* Raios */
-  --pm-r:          6px;
-  --pm-rl:         12px;
+  --pm-r: 6px;
+  --pm-rl: 12px;
 
   /* Bootstrap override */
-  --bs-body-bg:    var(--pm-bg0);
+  --bs-body-bg: var(--pm-bg0);
   --bs-body-color: var(--pm-t1);
   --bs-border-color: var(--pm-b2);
 }
 
 /* ─── LIGHT MODE ─── */
 [data-theme="light"] {
-  --pm-bg0:        #fafaf8;
-  --pm-bg1:        #f5f4f0;
-  --pm-bg2:        #edecea;
-  --pm-bg3:        #e4e3df;
-  --pm-bgc:        #ffffff;
+  --pm-bg0: #fafaf8;
+  --pm-bg1: #f5f4f0;
+  --pm-bg2: #edecea;
+  --pm-bg3: #e4e3df;
+  --pm-bgc: #ffffff;
 
-  --pm-gold:       #8c610f;
-  --pm-goldl:      #a8762a;
-  --pm-goldm:      rgba(140,97,15,.08);
-  --pm-goldb:      rgba(140,97,15,.22);
+  --pm-gold: #8c610f;
+  --pm-goldl: #a8762a;
+  --pm-goldm: rgba(140, 97, 15, 0.08);
+  --pm-goldb: rgba(140, 97, 15, 0.22);
 
-  --pm-teal:       #0a7b68;
-  --pm-tealm:      rgba(10,123,104,.08);
-  --pm-tealb:      rgba(10,123,104,.18);
+  --pm-teal: #0a7b68;
+  --pm-tealm: rgba(10, 123, 104, 0.08);
+  --pm-tealb: rgba(10, 123, 104, 0.18);
 
-  --pm-purple:     #6d5fa0;
-  --pm-purplem:    rgba(109,95,160,.08);
-  --pm-purpleb:    rgba(109,95,160,.20);
+  --pm-purple: #6d5fa0;
+  --pm-purplem: rgba(109, 95, 160, 0.08);
+  --pm-purpleb: rgba(109, 95, 160, 0.2);
 
-  --pm-t1:         #1a1814;
-  --pm-t2:         #6b6760;
-  --pm-t3:         #a8a49e;
-  --pm-tinv:       #fafaf8;
+  --pm-t1: #1a1814;
+  --pm-t2: #6b6760;
+  --pm-t3: #a8a49e;
+  --pm-tinv: #fafaf8;
 
-  --pm-b1:         rgba(140,97,15,.22);
-  --pm-b2:         rgba(0,0,0,.07);
-  --pm-b3:         rgba(0,0,0,.03);
+  --pm-b1: rgba(140, 97, 15, 0.22);
+  --pm-b2: rgba(0, 0, 0, 0.07);
+  --pm-b3: rgba(0, 0, 0, 0.03);
 
-  --bs-body-bg:    var(--pm-bg0);
+  --bs-body-bg: var(--pm-bg0);
   --bs-body-color: var(--pm-t1);
   --bs-border-color: var(--pm-b2);
 }
